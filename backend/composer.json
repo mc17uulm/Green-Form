@@ -1,0 +1,27 @@
+{
+    "name": "mc17uulm/green-form",
+    "authors": [
+        {
+            "name": "mc17uulm",
+            "email": "marco.combosch@uni-ulm.de"
+        }
+    ],
+    "require": {
+        "mc17uulm/php-routing": "dev-master",
+        "mc17uulm/php-database": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "server\\": "server/"
+        }
+    },
+    "repositories": [
+        {
+            "type": "github",
+            "url": "https://github.com/mc17uulm/PHPRouting"
+        }, {
+            "type": "github",
+            "url": "https://github.com/mc17uulm/PHPDatabase"
+        }
+    ]
+}
