@@ -7,7 +7,8 @@ module.exports = {
                 test: /\.(js|jsx)$/,
                 exclude: [
                     /node_modules/,
-                    /server/
+                    /conf/,
+                    /backend/
                 ],
                 use: {
                     loader: "babel-loader"
@@ -19,12 +20,15 @@ module.exports = {
                         loader: "html-loader"
                     }
                 ]
+            }, {
+                test: /\.css$/,
+                use: ['style-loader', 'css-loader']
             }
         ]
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./frontend/index.html",
+            template: "./src/index.html",
             filename: "./index.html"
         })
     ]

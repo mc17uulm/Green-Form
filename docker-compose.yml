@@ -9,5 +9,3 @@ services:
       - ./backend/:/var/www/html/
     stdin_open: true
     tty: true
-
-  

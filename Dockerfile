@@ -34,7 +34,9 @@ RUN \
     && a2enmod rewrite php${PHP_VERSION} \
     # Install composer
     && curl -sS https://getcomposer.org/installer | php -- --version=1.8.4 --install-dir=/usr/local/bin --filename=composer \
-    # TODO: installing node, npm, babel, webpack, nodemon, etc.
+    # Install GIT
+    && apt-get -y install git-core \
+    # Install node & npm
     && curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | bash \
     && source ${NVM_DIR}/nvm.sh \
     && nvm install $NODE_VERSION \
@@ -53,6 +55,7 @@ RUN \
 ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
 ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 
+RUN git --version
 RUN node -v
 RUN npm -v
 
