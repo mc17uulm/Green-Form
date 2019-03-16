@@ -13,13 +13,15 @@ class App extends Component
 
     render() {
         return (
-            <div className="login-box">
-                <div className="login-logo">
-                    <a href="#"><b>Green</b>Form</a>
-                </div>
-                <div className="login-box-body">
-                    <p className="login-box-msg">Infotext</p>
-                    <Form />
+            <div>
+                <div className="login-box">
+                    <div className="login-logo">
+                        <a href="#"><b>Green</b>Form</a>
+                    </div>
+                    <div className="login-box-body">
+                        <p className="login-box-msg">Infotext</p>
+                        <Form />
+                    </div>
                 </div>
             </div>
         );

@@ -1,8 +1,4 @@
 import React, {Component} from "react";
-import DayPickerInput from 'react-day-picker/DayPickerInput';
-import 'react-day-picker/lib/style.css';
-import MomentLocaleUtils from 'react-day-picker/moment';
-import 'moment/locale/de';
 
 class DateSelect extends Component
 {
@@ -11,7 +7,7 @@ class DateSelect extends Component
     {
         super(props);
         this.state = {
-            date: new Date()
+            date: 'dd.mm.yyyy'
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -20,20 +16,28 @@ class DateSelect extends Component
     handleChange(e)
     {
         e.preventDefault();
+        if(this.props.attr.error)
+        {
+            this.props.reset();
+        }
+        this.setState({date: e.target.value});
+        this.props.update(this.props.id, e.target.value);
     }
 
     render()
     {
         return (
-            <div className="form-group">
+            <div className={"form-group" + (this.props.attr.error ? " has-error" : "")}>
                 <label>{this.props.label}</label>
-                <DayPickerInput dayPickerProps={{
-                    month: new Date(),
-                    showWeekNumbers: true,
-                    todayButton: 'Heute',
-                    locale: 'de',
-                    localeUtils: MomentLocaleUtils
-                }} />
+                <div className="input-group">
+                    <div className="input-group-prepend">
+                        <span className="input-group-text"><i className="fa fa-calendar"></i></span>
+                        <input type="date" className="form-control" value={this.state.date} onChange={this.handleChange}/>
+                    </div>
+                </div>
+                {this.props.attr.error ? (
+                    <span className="help-block"><small>{this.props.attr.errorText}</small></span>
+                ) : ""}
             </div>
         );
     }

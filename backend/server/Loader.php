@@ -45,8 +45,8 @@ class Loader
             StaticHandler::get_init($res);
         });
 
-        Router::get("/get_organizations", function(Request $req, Response $res) {
-            $res->send_success(array("Kreisverband Heidenheim", "Kreisverband Aalen-Ellwangen", "Kresiverband Schwäbisch Gmünd"));
+        Router::post("/add", function(Request $req, Response $res) {
+            StaticHandler::add($req, $res);
         });
 
         Router::run();

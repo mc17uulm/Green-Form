@@ -9,6 +9,7 @@
 namespace server\handler;
 
 use PHPDatabase\connection\Database;
+use PHPRouting\routing\Request;
 use PHPRouting\routing\response\Response;
 
 class StaticHandler
@@ -36,6 +37,29 @@ class StaticHandler
 
         $res->send_success($out);
 
+    }
+
+    public static function add(Request $req, Response $res) : void
+    {
+        $data = $req->get_body();
+        $r = Database::insert(
+            "INSERT INTO people (firstname, lastname, date_of_birth, organization, district, in_kt, in_gr, in_or, family, job, statement) 
+                  VALUES (:firstname, :lastname, :date_of_birth, :organization, :district, :in_kt, :in_gr, :in_or, :family, :job, :statement)",
+            array(
+                ":firstname" => $data["firstname"],
+                ":lastname" => $data["lastname"],
+                ":date_of_birth" => $data["date_of_birth"],
+                "organization" => $data["organization"],
+                ":district" => $data["district"],
+                ":in_kt" => $data["gremium"]["in_kt"],
+                ":in_gr" => $data["gremium"]["in_gr"],
+                ":in_or" => $data["gremium"]["in_or"],
+                ":family" => $data["family"],
+                ":job" => $data["job"],
+                ":statement" => $data["statement"]
+            )
+        );
+        $res->send_success();
     }
 
 }

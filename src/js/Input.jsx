@@ -17,7 +17,10 @@ class Input extends Component
     change(e)
     {
         e.preventDefault();
-
+        if(this.props.attr.error)
+        {
+            this.props.reset();
+        }
         this.setState({value: e.target.value});
         this.props.update(this.props.id, e.target.value);
 
@@ -26,9 +29,12 @@ class Input extends Component
     render()
     {
         return (
-            <div className="form-group">
+            <div className={"form-group" + (this.props.attr.error ? " has-error" : "")}>
                 <label htmlFor={this.props.id}>{this.props.label}</label>
-                <input type={this.props.type} className="form-control" id={this.props.id} placeholder={this.props.placeholder} value={this.props.value} onChange={this.change} />
+                <input type={this.props.type} className="form-control" id={this.props.id} placeholder={this.props.placeholder} value={this.props.attr.value} onChange={this.change} />
+                {this.props.attr.error ? (
+                    <span className="help-block"><small>{this.props.attr.errorText}</small></span>
+                ) : ""}
             </div>
         );
     }
