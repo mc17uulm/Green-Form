@@ -35,7 +35,7 @@ class Alert extends Component
     {
         return (
             <div>
-                {this.state.hide ? (
+                {!this.state.hidden ? (
                     <div className={"alert alert-" + this.props.type + " alert-dismissible"}>
                         <button type="button" className="close" onClick={this.hide}>&times;</button>
                         <h4><i className={"icon fa fa-" + this.render_icon(this.props.type)}></i> {this.props.title}</h4>

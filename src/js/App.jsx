@@ -16,10 +16,10 @@ class App extends Component
             <div>
                 <div className="login-box">
                     <div className="login-logo">
-                        <a href="#"><b>Green</b>Form</a>
+                        <a href="#"><img height="100px" src="public/img/logo.png" alt="logo" /></a>
                     </div>
                     <div className="login-box-body">
-                        <p className="login-box-msg">Infotext</p>
+                        <p className="login-box-msg">Hier ist noch Platz für einen informativen Text</p>
                         <Form />
                     </div>
                 </div>

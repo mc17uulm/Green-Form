@@ -51,15 +51,15 @@ class StaticHandler
                 ":date_of_birth" => $data["date_of_birth"],
                 "organization" => $data["organization"],
                 ":district" => $data["district"],
-                ":in_kt" => $data["gremium"]["in_kt"],
-                ":in_gr" => $data["gremium"]["in_gr"],
-                ":in_or" => $data["gremium"]["in_or"],
+                ":in_kt" => intval($data["gremium"]["kt"]),
+                ":in_gr" => intval($data["gremium"]["gr"]),
+                ":in_or" => intval($data["gremium"]["or"]),
                 ":family" => $data["family"],
                 ":job" => $data["job"],
                 ":statement" => $data["statement"]
             )
         );
-        $res->send_success();
+        $r ? $res->send_success() : $res->send_error("Database error");
     }
 
 }

@@ -27,26 +27,30 @@ class Loader
         {
             die($e->getMessage());
         }
-
+        /*
         header("Access-Control-Allow-Origin: *");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
         header("Access-Control-Allow-Headers: *");
-        header("Access-Control-Allow-Credentials: true");
+        header("Access-Control-Allow-Credentials: true");*/
 
         Router::init("");
 
         Router::add_dir("/public", __DIR__ . "/../public/");
 
         Router::get("/", function(Request $req, Response $res) {
-            $res->send("Running");
+            $res->send_file(__DIR__ . "/../sites/index.html");
         });
 
-        Router::get("/init", function(Request $req, Response $res) {
+        Router::get("/api/init", function(Request $req, Response $res) {
             StaticHandler::get_init($res);
         });
 
-        Router::post("/add", function(Request $req, Response $res) {
+        Router::post("/api/add", function(Request $req, Response $res) {
             StaticHandler::add($req, $res);
+        });
+
+        Router::handle404(function(Response $res) {
+           $res->send_file(__DIR__ . "/../sites/404.html");
         });
 
         Router::run();

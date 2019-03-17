@@ -3,7 +3,7 @@ class APIHandler
 
     static base()
     {
-        return "http://localhost:8080/";
+        return "https://kommunalwahl.combosch.de/api/";
     }
 
     static async get(res)
