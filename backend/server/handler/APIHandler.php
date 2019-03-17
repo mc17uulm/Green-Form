@@ -12,7 +12,7 @@ use PHPDatabase\connection\Database;
 use PHPRouting\routing\Request;
 use PHPRouting\routing\response\Response;
 
-class StaticHandler
+class APIHandler
 {
 
     public static function get_init(Response $res) : void
@@ -43,8 +43,8 @@ class StaticHandler
     {
         $data = $req->get_body();
         $r = Database::insert(
-            "INSERT INTO people (firstname, lastname, date_of_birth, organization, district, in_kt, in_gr, in_or, family, job, statement) 
-                  VALUES (:firstname, :lastname, :date_of_birth, :organization, :district, :in_kt, :in_gr, :in_or, :family, :job, :statement)",
+            "INSERT INTO people (firstname, lastname, date_of_birth, organization, district, in_kt, in_gr, in_or, family, job, statement, send) 
+                  VALUES (:firstname, :lastname, :date_of_birth, :organization, :district, :in_kt, :in_gr, :in_or, :family, :job, :statement, NOW())",
             array(
                 ":firstname" => $data["firstname"],
                 ":lastname" => $data["lastname"],

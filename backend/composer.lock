@@ -49,12 +49,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mc17uulm/PHPRouting.git",
-                "reference": "abbf5dbebc0d0dcd38f45524f8bd2bb6aa7c1a30"
+                "reference": "c16b8e6c4c2f1e16a4ec0f62b80226a8e1dd8368"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mc17uulm/PHPRouting/zipball/abbf5dbebc0d0dcd38f45524f8bd2bb6aa7c1a30",
-                "reference": "abbf5dbebc0d0dcd38f45524f8bd2bb6aa7c1a30",
+                "url": "https://api.github.com/repos/mc17uulm/PHPRouting/zipball/c16b8e6c4c2f1e16a4ec0f62b80226a8e1dd8368",
+                "reference": "c16b8e6c4c2f1e16a4ec0f62b80226a8e1dd8368",
                 "shasum": ""
             },
             "require": {
@@ -78,7 +78,7 @@
                 "source": "https://github.com/mc17uulm/PHPRouting/tree/master",
                 "issues": "https://github.com/mc17uulm/PHPRouting/issues"
             },
-            "time": "2019-03-09T23:14:36+00:00"
+            "time": "2019-03-17T19:08:25+00:00"
         },
         {
             "name": "phpoption/phpoption",

@@ -1,3 +1,17 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: mc17uulm
+ * Date: 17.03.2019
+ * Time: 19:22
+ */
+
+if(empty($_SESSION["csrf_token"]))
+{
+    $_SESSION["csrf_token"] = bin2hex(random_bytes(32));
+}
+
+?>
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -5,6 +19,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="csrf-token" content="<?= $_SESSION["csrf_token"] ?>">
+    <link rel="icon" type="image/png" href="public/img/favicon_32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="public/imgfavicon_96x96.png" sizes="96x96">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet" href="public/css/bootstrap-datepicker.min.css" />
@@ -18,18 +35,9 @@
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <title>Title</title>
+    <title>Informationen - Kommunalwahl 2019 | gruene-heidenheim.de</title>
 </head>
 <body class="hold-transition login-page">
-    <div id="app"></div>
-    <footer class="footer-wrap">
-        <div class="footer">
-            <div class="footer-content">
-                <div class="text-center hidden-xs">
-                    <small><b>Made with 💖 by mc17uulm | Sourcecode at <a href="https://github.com/mc17uulm/Green-Form">GitHub</a></b></small>
-                </div>
-            </div>
-        </div>
-    </footer>
+<div id="app"></div>
 <script type="text/javascript" src="public/js/main.js"></script></body>
 </html>

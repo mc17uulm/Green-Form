@@ -205,10 +205,10 @@ class Form extends Component
                 <form>
                     <Rows>
                         <Row size="4">
-                            <Input id="firstname" label="Vorname" type="text" placeholder="Vorname" attr={this.state.firstname} update={this.update} reset={this.reset}/>
+                            <Input id="firstname" label="Vorname" type="text" maxLength={25} placeholder="Vorname" attr={this.state.firstname} update={this.update} reset={this.reset}/>
                         </Row>
                         <Row size="4">
-                            <Input id="lastname" label="Nachname" type="text" placeholder="Nachname" attr={this.state.lastname} update={this.update} reset={this.reset}/>
+                            <Input id="lastname" label="Nachname" type="text" maxLength={25} placeholder="Nachname" attr={this.state.lastname} update={this.update} reset={this.reset}/>
                         </Row>
                         <Row size="4">
                             <DateSelect id="date_of_birth" label="Geburtsdatum" attr={this.state.date_of_birth} update={this.update} reset={this.reset} />
@@ -228,7 +228,7 @@ class Form extends Component
                             <SelectInput id="family" label="Familienstand" options={["ledig", "geschieden", "verheiratet"]} update={this.update_family} />
                         </Row>
                         <Row size="6">
-                            <Input id="job" label="Beruf" type="text" placeholder="Beruf" attr={this.state.job} update={this.update} reset={this.reset} />
+                            <Input id="job" label="Beruf" type="text" maxLength={50} placeholder="Beruf" attr={this.state.job} update={this.update} reset={this.reset} />
                         </Row>
                     </Rows>
                     <Textarea maxLength="300" label="Persönlicher Text" placeholder="..." attr={this.state.statement} rows="3" id="statement" update={this.update} reset={this.reset}/>

@@ -16,7 +16,7 @@ class Textarea extends Component
 
     componentDidMount()
     {
-        this.setState({label: this.props.label + "(" + this.props.maxLength + " Zeichen übrig)"});
+        this.setState({label: this.props.label + " (" + this.props.maxLength + " Zeichen übrig)"});
     }
 
     update(e)

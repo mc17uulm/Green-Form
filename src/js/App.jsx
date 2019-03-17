@@ -23,6 +23,9 @@ class App extends Component
                         <Form />
                     </div>
                 </div>
+                <div class="text-center hidden-xs" style={{color: "white"}}>
+                    <small><b>Made with ❤️ by mc17uulm | Sourcecode at <a href="https://github.com/mc17uulm/Green-Form">GitHub</a></b></small>
+                </div>
             </div>
         );
     }
