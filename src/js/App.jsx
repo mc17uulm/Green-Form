@@ -19,7 +19,7 @@ class App extends Component
                         <a href="#"><img height="100px" src="public/img/logo.png" alt="logo" /></a>
                     </div>
                     <div className="login-box-body">
-                        <p className="login-box-msg">Hier ist noch Platz für einen informativen Text</p>
+                        <p className="login-box-msg">Bitte gib unten alle Informationen für unseren Kommunalwahlfyler ein. Überprüfe vor dem Absenden bitte noch einmal alle Daten!<br />Danke!</p>
                         <Form />
                     </div>
                 </div>

@@ -70,6 +70,7 @@ class Form extends Component
         this.submitForm = this.submitForm.bind(this);
         this.update = this.update.bind(this);
         this.update_organization = this.update_organization.bind(this);
+        this.update_district = this.update_district.bind(this);
         this.update_select = this.update_select.bind(this);
         this.update_family = this.update_family.bind(this);
         this.update_captcha = this.update_captcha.bind(this);
@@ -85,7 +86,7 @@ class Form extends Component
         if(this.state.date_of_birth.value == "") { this.setState({date_of_birth: {value: "", error: true, errorText: "Bitte gib deinen Geburtstag mit an!"}}); err=true;}
         if(this.state.job.value == "") { this.setState({job: {value: "", error: true, errorText: "Bitte gib deinen Beruf mit an!"}}); err=true;}
         if(this.state.statement.value == "") { this.setState({statement: {value: "", error: true, errorText: "Bitte gib einen persönlichen Text von dir mit an!"}}); err=true;}
-        //if(!this.state.captcha.success) {this.setState({captcha: { success: false, error: true, errorText: "Bitte löse das Captcha!"}}); err=true;}
+        if(!this.state.captcha.success) {this.setState({captcha: { success: false, error: true, errorText: "Bitte löse das Captcha!"}}); err=true;}
         
         if(Object.entries(this.state.gremium.value).every((el) => {
             return !el[1];
@@ -101,7 +102,7 @@ class Form extends Component
             lastname: this.state.lastname.value,
             date_of_birth: this.state.date_of_birth.value,
             organization: this.state.organization.name,
-            district: this.state.district.name,
+            district: this.state.district,
             gremium: this.state.gremium.value,
             family: this.state.family,
             job: this.state.job.value,
@@ -156,6 +157,11 @@ class Form extends Component
         });
     }
 
+    update_district(id, value)
+    {
+        this.setState({district: value});
+    }
+
     update_select(id, value)
     {
         let o = this.state.gremium;
@@ -183,7 +189,8 @@ class Form extends Component
             lastname: {value: this.state.lastname.value, error: false, errorText: ""},
             date_of_birth: {value: this.state.date_of_birth.value, error: false, errorText: ""},
             job: {value: this.state.job.value, error: false, errorText: ""},
-            statement: {value: this.state.statement.value, error: false, errorText: ""}
+            statement: {value: this.state.statement.value, error: false, errorText: ""},
+            captcha: { success: false, error: false, errorText: ""}
         });
         await this.setState({
             gremium: {value: this.state.gremium.value, error: false, errorText: ""}
@@ -219,7 +226,7 @@ class Form extends Component
                             <SelectInput id="organization" label="Kreisverband" options={this.state.organizations.length > 0 ? this.state.organizations.map(el => el.name): []} update={this.update_organization} />
                         </Row>
                         <Row size="6">
-                            <SelectInput id="distric" label="Gemeinde" options={this.state.districts.length > 0 ? this.state.districts.map(el => el.name) : []} update={this.update} />
+                            <SelectInput id="distric" label="Gemeinde" options={this.state.districts.length > 0 ? this.state.districts.map(el => el.name) : []} update={this.update_district} />
                         </Row>
                     </Rows>
                     <SelectGroup label="Gremium" id="gremium" attr={this.state.gremium} update={this.update_select} reset={this.reset}/>
@@ -235,7 +242,7 @@ class Form extends Component
                     <Rows>
                         <Row size="8">
                             <div className={"form-group" + (this.state.captcha.error ? " has-error" : "")}>
-                                <ReCAPTCHA onChange={this.update_captcha} sitekey="6LeRHJgUAAAAAP5EgLikcgKLZrEyIpTMBJYra7Xx"/>
+                                <ReCAPTCHA onChange={this.update_captcha} sitekey="6LfJ75kUAAAAACFoY56NyooAjIZrreZU6YfIEDuv"/>
                             </div>
                             {this.state.captcha.error ? (
                                 <span className="help-block"><small>{this.state.captcha.errorText}</small></span>
