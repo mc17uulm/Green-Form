@@ -7,7 +7,7 @@ class DateSelect extends Component
     {
         super(props);
         this.state = {
-            date: 'dd.mm.yyyy'
+            date: 'yyyy-mm-dd'
         }
 
         this.handleChange = this.handleChange.bind(this);
@@ -32,7 +32,7 @@ class DateSelect extends Component
                 <div className="input-group">
                     <div className="input-group-prepend">
                         <span className="input-group-text"><i className="fa fa-calendar"></i></span>
-                        <input type="date" className="form-control" value={this.state.date} onChange={this.handleChange}/>
+                        <input type="date" className="form-control" min="1900-01-01" max="2001-05-26" value={this.state.date} onChange={this.handleChange}/>
                     </div>
                 </div>
                 {this.props.attr.error ? (

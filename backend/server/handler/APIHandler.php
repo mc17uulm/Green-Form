@@ -26,11 +26,7 @@ class APIHandler
             $districts = array();
             foreach($r as $d)
             {
-                array_push($districts, array("name" => $d["name"], "options" => array(
-                    "Kreistag" => boolval(intval($d["has_kt"])),
-                    "Gemeinderat" => boolval(intval($d["has_gr"])),
-                    "Ortschaftsrat" => boolval(intval($d["has_or"]))
-                )));
+                array_push($districts, array("name" => $d["name"]));
             }
             array_push($out, array("name" => $org["name"], "districts" => $districts));
         }
@@ -41,10 +37,15 @@ class APIHandler
 
     public static function add(Request $req, Response $res) : void
     {
+        if(self::multiple_request($req)){
+            $res->send_error("Invalid request");
+            die();
+        }
         $data = $req->get_body();
+        $csrf = $req->get_headers()["CsrfToken"];
         $r = Database::insert(
-            "INSERT INTO people (firstname, lastname, date_of_birth, organization, district, in_kt, in_gr, in_or, family, job, statement, send) 
-                  VALUES (:firstname, :lastname, :date_of_birth, :organization, :district, :in_kt, :in_gr, :in_or, :family, :job, :statement, NOW())",
+            "INSERT INTO people (firstname, lastname, date_of_birth, organization, district, in_kt, in_gr, in_or, family, job, statement, send, csrf) 
+                  VALUES (:firstname, :lastname, :date_of_birth, :organization, :district, :in_kt, :in_gr, :in_or, :family, :job, :statement, NOW(), :csrf)",
             array(
                 ":firstname" => $data["firstname"],
                 ":lastname" => $data["lastname"],
@@ -56,10 +57,17 @@ class APIHandler
                 ":in_or" => intval($data["gremium"]["or"]),
                 ":family" => $data["family"],
                 ":job" => $data["job"],
-                ":statement" => $data["statement"]
+                ":statement" => $data["statement"],
+                ":csrf" => $csrf
             )
         );
         $r ? $res->send_success() : $res->send_error("Database error");
+    }
+
+    private static function multiple_request(Request $req) : bool
+    {
+        $r = Database::select("SELECT send FROM people WHERE csrf = :c", array(":c" => $req->get_headers()["CsrfToken"]));
+        return count($r) !== 0;
     }
 
 }

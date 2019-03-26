@@ -19,12 +19,12 @@ class App extends Component
                         <a href="#"><img height="100px" src="public/img/logo.png" alt="logo" /></a>
                     </div>
                     <div className="login-box-body">
-                        <p className="login-box-msg">Bitte gib unten alle Informationen für unseren Kommunalwahlfyler ein. Überprüfe vor dem Absenden bitte noch einmal alle Daten!<br />Danke!</p>
+                        <p className="login-box-msg">Bitte gib unten alle Informationen für unseren Kommunalwahlflyer ein. Überprüfe vor dem Absenden bitte noch einmal alle Daten!<br />Danke!</p>
                         <Form />
                     </div>
                 </div>
                 <div class="text-center hidden-xs" style={{color: "white"}}>
-                    <small><b>Made with ❤️ by mc17uulm | Sourcecode at <a href="https://github.com/mc17uulm/Green-Form">GitHub</a></b></small>
+                    <small><b>Made with ❤️ by mc17uulm | Sourcecode at <a href="https://github.com/mc17uulm/Green-Form" target="_blank">GitHub</a></b></small>
                 </div>
             </div>
         );

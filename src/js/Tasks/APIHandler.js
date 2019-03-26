@@ -13,7 +13,6 @@ class APIHandler
 
     static async get(res)
     {
-        document.getElementsByName("csrf-token")
         const resp = await fetch(this.base() + res, {
             headers: {
                 "CsrfToken": this.get_token()

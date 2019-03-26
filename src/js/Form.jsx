@@ -120,7 +120,8 @@ class Form extends Component
         let organizations = res["msg"];
         let organization = res["msg"][0];
         let districts = organization.districts;
-        let district = organization.districts[0];
+        let district = organization.districts[0].name;
+        console.log(district);
         this.setState({
             organizations: organizations, 
             organization: organization,
@@ -149,7 +150,8 @@ class Form extends Component
     {
         let organization = this.state.organizations.filter(el => el.name === value)[0];
         let districts = organization.districts;
-        let district = organization.districts[0];
+        let district = organization.districts[0].name;
+        console.log(district);
         this.setState({
             organization: organization,
             districts: districts,
@@ -226,7 +228,7 @@ class Form extends Component
                             <SelectInput id="organization" label="Kreisverband" options={this.state.organizations.length > 0 ? this.state.organizations.map(el => el.name): []} update={this.update_organization} />
                         </Row>
                         <Row size="6">
-                            <SelectInput id="distric" label="Gemeinde" options={this.state.districts.length > 0 ? this.state.districts.map(el => el.name) : []} update={this.update_district} />
+                            <SelectInput id="district" label="Gemeinde" options={this.state.districts.length > 0 ? this.state.districts.map(el => el.name) : []} update={this.update_district} />
                         </Row>
                     </Rows>
                     <SelectGroup label="Gremium" id="gremium" attr={this.state.gremium} update={this.update_select} reset={this.reset}/>
