@@ -3023,6 +3023,17 @@ table.text-center th {
 .modal-danger .modal-footer {
   border-color: #c23321;
 }
+
+.modal-dialog{
+    overflow: initial !important;
+    width: 60% !important;
+    max-width: 60% !important;
+}
+
+.modal-body{
+    height: 400px;
+    overflow-y: auto;
+}
 /*
  * Component: Social Widgets
  * -------------------------

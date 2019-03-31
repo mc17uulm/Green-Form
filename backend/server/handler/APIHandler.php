@@ -26,7 +26,7 @@ class APIHandler
             $districts = array();
             foreach($r as $d)
             {
-                array_push($districts, array("name" => $d["name"]));
+                array_push($districts, array("name" => $d["name"], "characters" => $d["characters"]));
             }
             array_push($out, array("name" => $org["name"], "districts" => $districts));
         }
@@ -44,8 +44,8 @@ class APIHandler
         $data = $req->get_body();
         $csrf = $req->get_headers()["CsrfToken"];
         $r = Database::insert(
-            "INSERT INTO people (firstname, lastname, date_of_birth, organization, district, in_kt, in_gr, in_or, family, job, statement, send, csrf) 
-                  VALUES (:firstname, :lastname, :date_of_birth, :organization, :district, :in_kt, :in_gr, :in_or, :family, :job, :statement, NOW(), :csrf)",
+            "INSERT INTO people (firstname, lastname, date_of_birth, organization, district, in_kt, in_gr, in_or, family, children, grandkids, job, statement, send, csrf) 
+                  VALUES (:firstname, :lastname, :date_of_birth, :organization, :district, :in_kt, :in_gr, :in_or, :family, :children, :grandkids, :job, :statement, NOW(), :csrf)",
             array(
                 ":firstname" => $data["firstname"],
                 ":lastname" => $data["lastname"],
@@ -56,6 +56,8 @@ class APIHandler
                 ":in_gr" => intval($data["gremium"]["gr"]),
                 ":in_or" => intval($data["gremium"]["or"]),
                 ":family" => $data["family"],
+                ":children" => $data["children"],
+                ":grandkids" => $data["grandkids"],
                 ":job" => $data["job"],
                 ":statement" => $data["statement"],
                 ":csrf" => $csrf

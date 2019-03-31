@@ -7,7 +7,7 @@ class DateSelect extends Component
     {
         super(props);
         this.state = {
-            date: 'yyyy-mm-dd'
+            date: ""
         }
 
         this.handleChange = this.handleChange.bind(this);

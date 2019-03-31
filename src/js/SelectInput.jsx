@@ -23,7 +23,7 @@ class SelectInput extends Component
                 <label>{this.props.label}</label>
                 <select className="form-control" onChange={this.change}>
                     {this.props.options.length > 0 ? this.props.options.map(el => (
-                        <option>{el}</option>
+                        <option key={el}>{el}</option>
                     )) : ("")}
                 </select>
             </div>

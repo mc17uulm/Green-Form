@@ -7,10 +7,6 @@ class Input extends Component
     {
         super(props);
 
-        this.state = {
-            value: this.props.value
-        }
-
         this.change = this.change.bind(this);
     }
 
@@ -21,7 +17,6 @@ class Input extends Component
         {
             this.props.reset();
         }
-        this.setState({value: e.target.value});
         this.props.update(this.props.id, e.target.value);
 
     }

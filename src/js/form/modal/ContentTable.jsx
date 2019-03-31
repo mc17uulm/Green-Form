@@ -64,30 +64,45 @@ class ContentTable extends Component
             <div>
                 <div className="alert alert-info">
                     <h4><i className="icon fa fa-info"></i> Wichtig!</h4>
-                    Bitte überprüfe hier noch einmal deine eingegebenen Daten. Einer spätere Änderung ist
+                    <small>Bitte überprüfe hier noch einmal deine eingegebenen Daten. Einer spätere Änderung ist
                     nicht mehr möglich! Wenn du noch etwas ändern möchstest, kannst du das mit einem Klick auf "Zurück" tun.
+                    </small>
                 </div>
                 <Rows>
-                    <Row size="6">
+                    <Row size="4">
                         <dl>
                             <dt>Kreisverband:</dt>
                             <dd>{this.props.obj.organization}</dd>
-                            <dt>Name:</dt>
-                            <dd>{this.props.obj.firstname} {this.props.obj.lastname}</dd>
+                            <dt>Alter:</dt>
+                            <dd>{this.printDate(this.props.obj.date_of_birth)} Jahre</dd>
+                            <dt>Kinder:</dt>
+                            <dd>{this.props.obj.children}</dd>
+                        </dl>
+                    </Row>
+                    <Row size="4">
+                        <dl>
+                            <dt>Gemeinde:</dt>
+                            <dd>{this.props.obj.district}</dd>
                             <dt>Familienstand:</dt>
                             <dd>{this.props.obj.family}</dd>
+                            <dt>Enkelkinder:</dt>
+                            <dd>{this.props.obj.grandkids}</dd>
+                        </dl>
+                    </Row>
+                    <Row size="4">
+                        <dl>
+                            <dt>Name:</dt>
+                            <dd>{this.props.obj.firstname} {this.props.obj.lastname}</dd>
+                            <dt>Beruf:</dt>
+                            <dd>{this.props.obj.job}</dd>
                             <dt>Kandidat/in für:</dt>
                             <dd>{this.printGremium(this.props.obj.gremium)}</dd>
                         </dl>
                     </Row>
-                    <Row size="6">
+                </Rows>
+                <Rows>
+                    <Row size="12">
                         <dl>
-                            <dt>Gemeinde:</dt>
-                            <dd>{this.props.obj.district}</dd>
-                            <dt>Alter:</dt>
-                            <dd>{this.printDate(this.props.obj.date_of_birth)} Jahre</dd>
-                            <dt>Beruf:</dt>
-                            <dd>{this.props.obj.job}</dd>
                             <dt>Eigener Text:</dt>
                             <dd>{this.props.obj.statement}</dd>
                         </dl>

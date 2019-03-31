@@ -2,7 +2,6 @@ import "@babel/polyfill";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Form from "./Form.jsx";
-import Modal from "./form/modal/Modal.jsx";
 import APIHandler from "./Tasks/APIHandler.js";
 
 class App extends Component
@@ -22,7 +21,7 @@ class App extends Component
                         <a href="#"><img height="100px" src="public/img/logo.png" alt="logo" /></a>
                     </div>
                     <div className="login-box-body">
-                        <p className="login-box-msg">Bitte gib unten alle Informationen für unseren Kommunalwahlflyer ein. Überprüfe vor dem Absenden bitte noch einmal alle Daten!<br />Danke!</p>
+                        <p className="login-box-msg">Bitte gib unten alle Informationen für unseren Kommunalwahlflyer ein. Überprüfe vor dem Absenden bitte noch einmal alle Daten! Vielen Dank!</p>
                         <Form />
                     </div>
                 </div>

@@ -8,10 +8,8 @@ import DateSelect from "./DateSelect.jsx";
 import Textarea from "./Textarea.jsx";
 import Alert from "./Alert.jsx";
 import Modal from "./form/modal/Modal.jsx";
-
-import ReCAPTCHA from "react-google-recaptcha";
-
 import APIHandler from "./Tasks/APIHandler.js";
+import ReCAPTCHA from "react-google-recaptcha";
 
 class Form extends Component
 {
@@ -20,34 +18,16 @@ class Form extends Component
     {
         super(props);
 
+        const obj = {value: "", error: false, errorText: ""}
+
         this.state = {
             state: "none",
-            firstname: {
-                value: "",
-                error: false,
-                errorText: ""
-            },
-            lastname: {
-                value: "",
-                error: false,
-                errorText: ""
-            },
-            job: {
-                value: "",
-                error: false,
-                errorText: ""
-            },
-            date_of_birth: {
-                value: "",
-                error: false,
-                errorText: ""
-            },
+            firstname: obj,
+            lastname: obj,
+            job: obj,
+            date_of_birth: obj,
             family: "ledig",
-            statement: {
-                value: "",
-                error: false,
-                errorText: ""
-            },
+            statement: obj,
             gremium: {
                 value: {
                     kt: false,
@@ -61,8 +41,9 @@ class Form extends Component
             organization: [],
             districts: [],
             district: [],
+            character: 100,
             captcha: {
-                success: false,
+                value: false,
                 error: false,
                 errorText: ""
             },
@@ -70,7 +51,11 @@ class Form extends Component
                 hidden: true,
                 title: "",
                 content: null
-            }
+            },
+            children: 0,
+            grandkids: 0,
+            num: [],
+            obj: obj
         }
 
         this.submitForm = this.submitForm.bind(this);
@@ -78,8 +63,7 @@ class Form extends Component
         this.update_organization = this.update_organization.bind(this);
         this.update_district = this.update_district.bind(this);
         this.update_select = this.update_select.bind(this);
-        this.update_family = this.update_family.bind(this);
-        this.update_captcha = this.update_captcha.bind(this);
+        this.update_small = this.update_small.bind(this);
         this.reset = this.reset.bind(this);
         this.showModal = this.showModal.bind(this);
         this.hideModal = this.hideModal.bind(this);
@@ -95,7 +79,7 @@ class Form extends Component
         if(this.state.date_of_birth.value == "") { this.setState({date_of_birth: {value: "", error: true, errorText: "Bitte gib deinen Geburtstag mit an!"}}); err=true;}
         if(this.state.job.value == "") { this.setState({job: {value: "", error: true, errorText: "Bitte gib deinen Beruf mit an!"}}); err=true;}
         if(this.state.statement.value == "") { this.setState({statement: {value: "", error: true, errorText: "Bitte gib einen persönlichen Text von dir mit an!"}}); err=true;}
-        if(!this.state.captcha.success) {this.setState({captcha: { success: false, error: true, errorText: "Bitte löse das Captcha!"}}); err=true;}
+        if(!this.state.captcha.value) {this.setState({captcha: { value: false, error: true, errorText: "Bitte löse das Captcha!"}}); err=true;}
         
         if(Object.entries(this.state.gremium.value).every((el) => {
             return !el[1];
@@ -115,13 +99,14 @@ class Form extends Component
             gremium: this.state.gremium.value,
             family: this.state.family,
             job: this.state.job.value,
-            statement: this.state.statement.value
+            statement: this.state.statement.value,
+            children: this.state.children,
+            grandkids: this.state.grandkids
         });
     }
 
-    handleResponse(content){
-        console.log(content);
-        let resp = APIHandler.post('add', content);
+    async handleResponse(content){
+        let resp = await APIHandler.post('add', content);
         this.setState({
             state: resp["type"]
         });
@@ -129,16 +114,23 @@ class Form extends Component
 
     async componentDidMount()
     {
+        let num = [];
+        for(let i = 0; i <= 15; i++) {
+            num.push(i);
+        }
         let res = await APIHandler.get("init");
         let organizations = res["msg"];
         let organization = res["msg"][0];
         let districts = organization.districts;
         let district = organization.districts[0].name;
+        let character = organization.districts[0].characters;
         this.setState({
+            num: num,
             organizations: organizations, 
             organization: organization,
             districts: districts,
-            district: district
+            district: district,
+            character: character
         });
     }
 
@@ -153,9 +145,11 @@ class Form extends Component
         });
     }
 
-    update_family(id, value)
+    update_small(id, value)
     {
-        this.setState({family: value});
+        this.setState({
+            [id]: value
+        });
     }
 
     update_organization(id, value)
@@ -163,17 +157,19 @@ class Form extends Component
         let organization = this.state.organizations.filter(el => el.name === value)[0];
         let districts = organization.districts;
         let district = organization.districts[0].name;
-        console.log(district);
+        let character = organization.districts[0].characters;
         this.setState({
             organization: organization,
             districts: districts,
-            district: district
+            district: district,
+            character: character
         });
     }
 
     update_district(id, value)
     {
-        this.setState({district: value});
+        let character = this.state.districts.find(el => el.name === value)[0].characters;
+        this.setState({district: value, character: character});
     }
 
     update_select(id, value)
@@ -185,17 +181,6 @@ class Form extends Component
         });
     }
 
-    update_captcha()
-    {
-        this.setState({
-            captcha: {
-                success: true,
-                error: false,
-                errorText: ""
-            }
-        });
-    }
-
     async reset()
     {
         await this.setState({
@@ -204,7 +189,7 @@ class Form extends Component
             date_of_birth: {value: this.state.date_of_birth.value, error: false, errorText: ""},
             job: {value: this.state.job.value, error: false, errorText: ""},
             statement: {value: this.state.statement.value, error: false, errorText: ""},
-            captcha: { success: false, error: false, errorText: ""}
+            captcha: { value: false, error: false, errorText: ""}
         });
         await this.setState({
             gremium: {value: this.state.gremium.value, error: false, errorText: ""}
@@ -266,17 +251,25 @@ class Form extends Component
                     <SelectGroup label="Gremium" id="gremium" attr={this.state.gremium} update={this.update_select} reset={this.reset}/>
                     <Rows>
                         <Row size="6">
-                            <SelectInput id="family" label="Familienstand" options={["ledig", "geschieden", "verheiratet"]} update={this.update_family} />
+                            <SelectInput id="family" label="Familienstand" options={["ledig", "geschieden", "verheiratet"]} update={this.update_small} />
                         </Row>
                         <Row size="6">
                             <Input id="job" label="Beruf" type="text" maxLength={50} placeholder="Beruf" attr={this.state.job} update={this.update} reset={this.reset} />
                         </Row>
                     </Rows>
-                    <Textarea maxLength="300" label="Persönlicher Text" placeholder="..." attr={this.state.statement} rows="3" id="statement" update={this.update} reset={this.reset}/>
+                    <Rows>
+                        <Row size="6">
+                            <SelectInput id="children" label="Kinder" options={this.state.num} update={this.update_small}/>
+                        </Row>
+                        <Row size="6">
+                            <SelectInput id="grandkids" label="Enkelkinder" options={this.state.num} update={this.update_small}/>
+                        </Row>
+                    </Rows>
+                    <Textarea maxLength={this.state.character} label="Persönlicher Text" placeholder="..." attr={this.state.statement} rows="3" id="statement" update={this.update} reset={this.reset}/>
                     <Rows>
                         <Row size="8">
                             <div className={"form-group" + (this.state.captcha.error ? " has-error" : "")}>
-                                <ReCAPTCHA onChange={this.update_captcha} sitekey="6LfJ75kUAAAAACFoY56NyooAjIZrreZU6YfIEDuv"/>
+                                <ReCAPTCHA onChange={() => this.update("captcha", true)} sitekey="6LfJ75kUAAAAACFoY56NyooAjIZrreZU6YfIEDuv"/>
                             </div>
                             {this.state.captcha.error ? (
                                 <span className="help-block"><small>{this.state.captcha.errorText}</small></span>
@@ -286,7 +279,7 @@ class Form extends Component
                             <button type="button" onClick={this.submitForm} className="btn btn-info pull-right"><i className="fa fa-paper-plane"></i> Abschicken</button>
                         </Row>
                     </Rows>
-                    <Modal hidden={this.state.modal.hidden} title={this.state.modal.title} content={this.state.modal.content} close={this.hideModal} save={this.handleResponse} btn_text="Abschicken" />
+                    <Modal hidden={this.state.modal.hidden} title={this.state.modal.title} content={this.state.modal.content} close={this.hideModal} save={(c) => {this.hideModal(); this.handleResponse(c);}} btn_text="Abschicken" />
                     {this.state.modal.hidden ? "" : (
                         <div className="modal-backdrop fade show"></div>
                     )}
