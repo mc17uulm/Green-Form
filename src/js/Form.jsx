@@ -168,7 +168,7 @@ class Form extends Component
 
     update_district(id, value)
     {
-        let character = this.state.districts.find(el => el.name === value)[0].characters;
+        let character = this.state.districts.find(el => el.name === value).characters;
         this.setState({district: value, character: character});
     }
 
