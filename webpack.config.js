@@ -1,4 +1,5 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+//const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { resolve } = require('path');
 
 module.exports = {
     module: {
@@ -26,10 +27,8 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new HtmlWebpackPlugin({
-            template: "./src/index.html",
-            filename: "./index.html"
-        })
-    ]
+    output: {
+        filename: "main.js",
+        path: resolve(__dirname, "backend/public/js/")
+    }
 };

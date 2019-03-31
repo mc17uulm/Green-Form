@@ -7,6 +7,7 @@ import SelectGroup from "./SelectGroup.jsx";
 import DateSelect from "./DateSelect.jsx";
 import Textarea from "./Textarea.jsx";
 import Alert from "./Alert.jsx";
+import Modal from "./form/modal/Modal.jsx";
 
 import ReCAPTCHA from "react-google-recaptcha";
 
@@ -64,6 +65,11 @@ class Form extends Component
                 success: false,
                 error: false,
                 errorText: ""
+            },
+            modal: {
+                hidden: true,
+                title: "",
+                content: null
             }
         }
 
@@ -75,6 +81,9 @@ class Form extends Component
         this.update_family = this.update_family.bind(this);
         this.update_captcha = this.update_captcha.bind(this);
         this.reset = this.reset.bind(this);
+        this.showModal = this.showModal.bind(this);
+        this.hideModal = this.hideModal.bind(this);
+        this.handleResponse = this.handleResponse.bind(this);
     }
 
     async submitForm(e)
@@ -97,7 +106,7 @@ class Form extends Component
 
         if(err) return;
 
-        let resp = await APIHandler.post('add', {
+        this.showModal("Daten überprüfen", {
             firstname: this.state.firstname.value,
             lastname: this.state.lastname.value,
             date_of_birth: this.state.date_of_birth.value,
@@ -108,7 +117,11 @@ class Form extends Component
             job: this.state.job.value,
             statement: this.state.statement.value
         });
+    }
 
+    handleResponse(content){
+        console.log(content);
+        let resp = APIHandler.post('add', content);
         this.setState({
             state: resp["type"]
         });
@@ -121,7 +134,6 @@ class Form extends Component
         let organization = res["msg"][0];
         let districts = organization.districts;
         let district = organization.districts[0].name;
-        console.log(district);
         this.setState({
             organizations: organizations, 
             organization: organization,
@@ -200,6 +212,26 @@ class Form extends Component
     
     }
 
+    showModal(title, content){
+        this.setState({
+            modal: {
+                hidden: false,
+                title: title,
+                content: content
+            }
+        });
+    }
+
+    hideModal() {
+        this.setState({
+            modal: {
+                hidden: true,
+                title: "",
+                content: null
+            }
+        });
+    }
+
     render()
     {
         switch(this.state.state){
@@ -254,6 +286,10 @@ class Form extends Component
                             <button type="button" onClick={this.submitForm} className="btn btn-info pull-right"><i className="fa fa-paper-plane"></i> Abschicken</button>
                         </Row>
                     </Rows>
+                    <Modal hidden={this.state.modal.hidden} title={this.state.modal.title} content={this.state.modal.content} close={this.hideModal} save={this.handleResponse} btn_text="Abschicken" />
+                    {this.state.modal.hidden ? "" : (
+                        <div className="modal-backdrop fade show"></div>
+                    )}
                 </form>
             );
             

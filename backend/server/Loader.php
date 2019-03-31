@@ -27,7 +27,6 @@ class Loader
         {
             die($e->getMessage());
         }
-
         session_start();
 
         if($dev){
@@ -57,12 +56,12 @@ class Loader
             $req->is_valid_api_request() ? APIHandler::add($req, $res) : $res->send_error("Invalid request");
         });
 
-        if($dev)
+        /**if($dev)
         {
             Router::get("/main.js", function(Request $req, Response $res) {
                 header("Location: http://localhost:8081/main.js");
             });
-        }
+        }*/
 
         Router::handle404(function($t) {
            header("Location: /");

@@ -1,9 +1,9 @@
 class APIHandler
 {
 
-    static base()
+    static init(base)
     {
-        return "https://kommunalwahl.combosch.de/api/";
+        this.base = base + "api/";
     }
 
     static get_token()
@@ -13,7 +13,7 @@ class APIHandler
 
     static async get(res)
     {
-        const resp = await fetch(this.base() + res, {
+        const resp = await fetch(this.base + res, {
             headers: {
                 "CsrfToken": this.get_token()
             }
@@ -24,7 +24,7 @@ class APIHandler
 
     static async post(res, data)
     {
-        const resp = await fetch(this.base() + res, 
+        const resp = await fetch(this.base + res, 
             {
                 method: "POST",
                 headers: {

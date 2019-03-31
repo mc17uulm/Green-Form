@@ -2,6 +2,8 @@ import "@babel/polyfill";
 import React, {Component} from "react";
 import ReactDOM from "react-dom";
 import Form from "./Form.jsx";
+import Modal from "./form/modal/Modal.jsx";
+import APIHandler from "./Tasks/APIHandler.js";
 
 class App extends Component
 {
@@ -9,6 +11,7 @@ class App extends Component
     constructor(props)
     {
         super(props);
+        APIHandler.init(document.getElementsByTagName("base")[0].getAttribute('href'));
     }
 
     render() {
@@ -23,7 +26,7 @@ class App extends Component
                         <Form />
                     </div>
                 </div>
-                <div class="text-center hidden-xs" style={{color: "white"}}>
+                <div className="text-center hidden-xs" style={{color: "white"}}>
                     <small><b>Made with ❤️ by mc17uulm | Sourcecode at <a href="https://github.com/mc17uulm/Green-Form" target="_blank">GitHub</a></b></small>
                 </div>
             </div>
