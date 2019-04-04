@@ -13,11 +13,6 @@ class APIHandler
 
     static async get(res)
     {
-        // const resp = await fetch(this.base + res, {
-        //     headers: {
-        //         "CsrfToken": this.get_token()
-        //     }
-        // });
         const resp = await this.request("GET", this.base + res, {"CsrfToken": this.get_token()});
         const json = JSON.parse(resp);
         return json;
@@ -25,16 +20,6 @@ class APIHandler
 
     static async post(res, data)
     {
-        // const resp = await fetch(this.base + res, 
-        //     {
-        //         method: "POST",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             "CsrfToken": this.get_token()
-        //         },
-        //         body: JSON.stringify(data)
-        //     }
-        // );
         const resp = await this.request("POST", this.base + res, {
             "Content-Type": "application/json",
             "CsrfToken": this.get_token()

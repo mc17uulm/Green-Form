@@ -13,6 +13,8 @@ use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Exception;
 use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpWord\IOFactory;
+use PhpOffice\PhpWord\PhpWord;
 
 class Crawler
 {
@@ -59,6 +61,38 @@ class Crawler
 
             self::save_to_zip($dir);
             system("rm -rf " . escapeshellarg("$dir*"));
+        }
+
+    }
+
+    public static function get_district(string $district = "") {
+        $dir = __DIR__ . "/../backup/";
+        $docx = $dir . "$district.docx";
+        if(!file_exists($dir)){
+            mkdir($dir);
+        }
+        if(is_dir($dir)) {
+            $people = Database::select("SELECT * FROM people WHERE district = :d", array(":d" => $district));
+            if(count($people) > 0){
+                $str = "";
+                foreach($people as $human)
+                {
+                    $str .= $human["firstname"] . " " . $human["lastname"] . "<w:br/>";
+                    $str .= self::calculate_age($human["date_of_birth"]) . " Jahre alt<w:br/>";
+                    $str .= $human["job"] . "<w:br/>";
+                    $str .= $human["family"] . "<w:br/>Kandidiert für ";
+                    if($human["in_kt"]) $str .= "Kreistag, ";
+                    if($human["in_gr"]) $str .= "Gemeinderat, ";
+                    if($human["in_or"]) $str .= "Ortschaftsrat";
+                    $str .= "<w:br/>";
+                    $str .= "Kinder: " . $human["children"] . " | Enkelkinder: " . $human["grandkids"] . "<w:br/>";
+                    $str .= $human["statement"] . "<w:br/><w:br/>";
+                }
+                if(self::save_to_docx($str, $docx))
+                {
+                    echo "finished";
+                }
+            }
         }
 
     }
@@ -119,6 +153,21 @@ class Crawler
             case 1: return "true";
             default: return "false";
         }
+    }
+
+    private static function save_to_docx(string $data, string $docx) : bool
+    {
+        $word = new PhpWord();
+        $section = $word->addSection();
+        $section->addText($data, array('name' => 'PT Sans', 'size' => 10));
+        try {
+            $writer = IOFactory::createWriter($word, 'Word2007');
+            $writer->save($docx);
+        } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+        return true;
     }
 
     private static function csv_to_xsl(string $csv, string $xls) : bool

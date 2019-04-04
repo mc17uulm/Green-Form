@@ -9,7 +9,8 @@
     "require": {
         "mc17uulm/php-routing": "dev-master",
         "mc17uulm/php-database": "dev-master",
-        "phpoffice/phpspreadsheet": "^1.6"
+        "phpoffice/phpspreadsheet": "^1.6",
+        "phpoffice/phpword": "^0.16.0"
     },
     "autoload": {
         "psr-4": {

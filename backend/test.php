@@ -16,19 +16,4 @@ try{
     die($e->getMessage());
 }
 
-\server\Crawler::get_all("");
-
-/*$dates = array(
-    "25.05.1993",
-    "26.05.1993",
-    "27.05.1993",
-    "01.01.1993",
-    "31.12.1993"
-);
-
-foreach($dates as $date)
-{
-    echo "Date: $date\r\n";
-    $age = \server\Crawler::calculate_age($date);
-    echo "Age: $age\r\n\r\n";
-}*/
+\server\Crawler::get_all();

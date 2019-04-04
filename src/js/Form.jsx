@@ -77,6 +77,9 @@ class Form extends Component
         if(this.state.firstname.value == "") { this.setState({firstname: {value: "", error: true, errorText: "Bitte gib deinen Vornamen mit an!"}}); err=true;}
         if(this.state.lastname.value == "") { this.setState({lastname: {value: "", error: true, errorText: "Bitte gib deinen Nachnamen mit an!"}}); err=true;}
         if(this.state.date_of_birth.value == "") { this.setState({date_of_birth: {value: "", error: true, errorText: "Bitte gib deinen Geburtstag mit an!"}}); err=true;}
+        let parts = this.state.date_of_birth.value.split('-');
+        if(parts.length < 3){  this.setState({date_of_birth: {value: this.state.date_of_birth.value, error: true, errorText: "Ungültiges Datumformat!"}}); err=true; }
+        else if (parts[0] <= 1900 || parts[0] > 2003) { this.setState({date_of_birth: {value: this.state.date_of_birth.value, error: true, errorText: "Ungültiges Alter!"}}); err=true; }
         if(this.state.job.value == "") { this.setState({job: {value: "", error: true, errorText: "Bitte gib deinen Beruf mit an!"}}); err=true;}
         if(this.state.statement.value == "") { this.setState({statement: {value: "", error: true, errorText: "Bitte gib einen persönlichen Text von dir mit an!"}}); err=true;}
         if(!this.state.captcha.value) {this.setState({captcha: { value: false, error: true, errorText: "Bitte löse das Captcha!"}}); err=true;}
