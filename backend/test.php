@@ -16,4 +16,4 @@ try{
     die($e->getMessage());
 }
 
-\server\Crawler::get_all();
+\server\Crawler::get_district("Schwäbisch-Gmünd");

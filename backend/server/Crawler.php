@@ -67,7 +67,7 @@ class Crawler
 
     public static function get_district(string $district = "") {
         $dir = __DIR__ . "/../backup/";
-        $docx = $dir . "$district.docx";
+        $docx = $dir . "$district.odt";
         if(!file_exists($dir)){
             mkdir($dir);
         }
@@ -88,7 +88,7 @@ class Crawler
                     $str .= "Kinder: " . $human["children"] . " | Enkelkinder: " . $human["grandkids"] . "<w:br/>";
                     $str .= $human["statement"] . "<w:br/><w:br/>";
                 }
-                if(self::save_to_docx($str, $docx))
+                if(self::save_to_odt($str, $docx))
                 {
                     echo "finished";
                 }
@@ -162,6 +162,23 @@ class Crawler
         $section->addText($data, array('name' => 'PT Sans', 'size' => 10));
         try {
             $writer = IOFactory::createWriter($word, 'Word2007');
+            $writer->save($docx);
+        } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
+            echo $e->getMessage();
+            return false;
+        }
+        return true;
+    }
+
+    private static function save_to_odt(string $data, string $docx) : bool
+    {
+        $word = new PhpWord();
+        $section = $word->addSection();
+        foreach(explode("<w:br/>", $data) as $line) {
+            $section->addText($line, array('name' => 'PT Sans', 'size' => 10));
+        }
+        try {
+            $writer = IOFactory::createWriter($word, 'ODText');
             $writer->save($docx);
         } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
             echo $e->getMessage();
