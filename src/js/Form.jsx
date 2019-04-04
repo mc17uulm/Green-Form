@@ -158,18 +158,23 @@ class Form extends Component
         let districts = organization.districts;
         let district = organization.districts[0].name;
         let character = organization.districts[0].characters;
+        let s = this.state.statement;
+        s.value = s.value.substring(0, character);
         this.setState({
             organization: organization,
             districts: districts,
             district: district,
-            character: character
+            character: character,
+            statement: s
         });
     }
 
     update_district(id, value)
     {
         let character = this.state.districts.find(el => el.name === value).characters;
-        this.setState({district: value, character: character});
+        let s = this.state.statement;
+        s.value = s.value.substring(0, character);
+        this.setState({district: value, character: character, statement: s});
     }
 
     update_select(id, value)
@@ -189,7 +194,7 @@ class Form extends Component
             date_of_birth: {value: this.state.date_of_birth.value, error: false, errorText: ""},
             job: {value: this.state.job.value, error: false, errorText: ""},
             statement: {value: this.state.statement.value, error: false, errorText: ""},
-            captcha: { value: false, error: false, errorText: ""}
+            captcha: { value: this.state.captcha.value, error: false, errorText: ""}
         });
         await this.setState({
             gremium: {value: this.state.gremium.value, error: false, errorText: ""}
@@ -265,7 +270,7 @@ class Form extends Component
                             <SelectInput id="grandkids" label="Enkelkinder" options={this.state.num} update={this.update_small}/>
                         </Row>
                     </Rows>
-                    <Textarea maxLength={this.state.character} label="Persönlicher Text" placeholder="..." attr={this.state.statement} rows="3" id="statement" update={this.update} reset={this.reset}/>
+                    <Textarea maxLength={this.state.character} label="Persönlicher Text" placeholder="..." text={this.state.statement} rows="3" id="statement" update={this.update} reset={this.reset}/>
                     <Rows>
                         <Row size="8">
                             <div className={"form-group" + (this.state.captcha.error ? " has-error" : "")}>
