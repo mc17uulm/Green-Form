@@ -16,4 +16,4 @@ try{
     die($e->getMessage());
 }
 
-\server\Crawler::get_district("Schwäbisch-Gmünd");
+\server\Crawler::get_district("Herbrechtingen", "json");

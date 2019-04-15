@@ -65,36 +65,61 @@ class Crawler
 
     }
 
-    public static function get_district(string $district = "") {
+    public static function get_district(string $district = "", string $type = "json") {
+        switch($type)
+        {
+            case "json":
+            case "odt":
+            case "docx":
+                break;
+            default:
+                die("Error: Invalid file type");
+        }
         $dir = __DIR__ . "/../backup/";
-        $docx = $dir . "$district.odt";
+        $doc = $dir . "$district.$type";
         if(!file_exists($dir)){
             mkdir($dir);
         }
         if(is_dir($dir)) {
             $people = Database::select("SELECT * FROM people WHERE district = :d", array(":d" => $district));
-            if(count($people) > 0){
-                $str = "";
-                foreach($people as $human)
+	        $count = count($people);
+	        echo "Count: $count\r\n";
+            if($count > 0){
+                switch($type)
                 {
-                    $str .= $human["firstname"] . " " . $human["lastname"] . "<w:br/>";
-                    $str .= self::calculate_age($human["date_of_birth"]) . " Jahre alt<w:br/>";
-                    $str .= $human["job"] . "<w:br/>";
-                    $str .= $human["family"] . "<w:br/>Kandidiert für ";
-                    if($human["in_kt"]) $str .= "Kreistag, ";
-                    if($human["in_gr"]) $str .= "Gemeinderat, ";
-                    if($human["in_or"]) $str .= "Ortschaftsrat";
-                    $str .= "<w:br/>";
-                    $str .= "Kinder: " . $human["children"] . " | Enkelkinder: " . $human["grandkids"] . "<w:br/>";
-                    $str .= $human["statement"] . "<w:br/><w:br/>";
+                    case "json":
+                        self::save_to_json($people, $doc);
+                        break;
+                    case "odt":
+                        self::save_to_odt(self::build_text($people), $doc);
+                        break;
+                    case "docx":
+                        self::save_to_docx(self::build_text($people), $doc);
+                        break;
                 }
-                if(self::save_to_odt($str, $docx))
-                {
-                    echo "finished";
-                }
+                echo "finished";
             }
         }
 
+    }
+
+    private static function build_text(array $data) : string
+    {
+        $str = "";
+        foreach($data as $human)
+        {
+            $str .= $human["firstname"] . " " . $human["lastname"] . "<w:br/>";
+            $str .= self::calculate_age($human["date_of_birth"]) . " Jahre alt<w:br/>";
+            $str .= $human["job"] . "<w:br/>";
+            $str .= $human["family"] . "<w:br/>Kandidiert für ";
+            if($human["in_kt"]) $str .= "Kreistag, ";
+            if($human["in_gr"]) $str .= "Gemeinderat, ";
+            if($human["in_or"]) $str .= "Ortschaftsrat";
+            $str .= "<w:br/>";
+            $str .= "Kinder: " . $human["children"] . " | Enkelkinder: " . $human["grandkids"] . "<w:br/>";
+            $str .= $human["statement"] . "<w:br/><w:br/>";
+        }
+        return $str;
     }
 
     private static function save_to_zip(string $dir) : string
@@ -170,21 +195,50 @@ class Crawler
         return true;
     }
 
-    private static function save_to_odt(string $data, string $docx) : bool
+    private static function save_to_odt(string $data, string $doc) : bool
     {
         $word = new PhpWord();
         $section = $word->addSection();
         foreach(explode("<w:br/>", $data) as $line) {
-            $section->addText($line, array('name' => 'PT Sans', 'size' => 10));
+            $section->addText(htmlspecialchars($line), array('name' => 'PT Sans', 'size' => 10));
         }
         try {
             $writer = IOFactory::createWriter($word, 'ODText');
-            $writer->save($docx);
+            $writer->save($doc);
         } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
             echo $e->getMessage();
             return false;
         }
         return true;
+    }
+
+    private static function save_to_json(array $data, string $file) : bool
+    {
+
+        $candidates = array();
+        foreach($data as $human)
+        {
+            array_push($candidates, array(
+                "name" => $human["firstname"] . " " . $human["lastname"],
+                "age" => self::calculate_age($human["date_of_birth"]),
+                "job" => $human["job"],
+                "family" => $human["family"],
+                "children" => $human["children"],
+                "grandchildren" => $human["grandkids"],
+                "statement" => $human["statement"],
+                "picture" => "https://combosch.de/public/kommunalwahl/" . str_replace(" ", "", $human["firstname"]) . "-" . str_replace(" ", "", $human["lastname"]) . ".jpg",
+                "committee" => array(
+                    "kt" => array("active" => boolval($human["in_kt"]), "position" => -1),
+                    "gr" => array("active" => boolval($human["in_gr"]), "position" => -1),
+                    "or" => array("active" => boolval($human["in_or"]), "position" => -1),
+                )
+            ));
+        }
+
+        file_put_contents($file, json_encode(array("candidates" => $candidates), JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
+
+        return true;
+
     }
 
     private static function csv_to_xsl(string $csv, string $xls) : bool

@@ -41,6 +41,10 @@ class APIHandler
             $res->send_error("Invalid request");
             die();
         }
+        $b = explode(".", $data["date_of_birth"]);
+        if(count($b) > 1) {
+            $data["date_of_birth"] = implode("-", array_reverse($b));
+        }
         $data = $req->get_body();
         $csrf = $req->get_headers()["CsrfToken"];
         $r = Database::insert(

@@ -17,6 +17,10 @@ class ContentTable extends Component
     {
         let election = "26.05.2019".split(".").map(el => parseInt(el));
         let birth = date.split("-").map(el => parseInt(el));
+        if(birth.length === 1) {
+            birth = date.split('.').map(el => parseInt(el));
+            birth = birth.reverse();
+        }
 
         if(birth[1] < election[1]) {
             return election[2] - birth[0];
