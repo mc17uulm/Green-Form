@@ -19,7 +19,7 @@ use PhpOffice\PhpWord\PhpWord;
 class Crawler
 {
 
-    public static function get_all() : void
+    public static function get_all(string $type) : void
     {
 
         $dir = __DIR__ . "/../backup/";
@@ -65,12 +65,21 @@ class Crawler
 
     }
 
-    public static function get_district(string $district = "", string $type = "json") {
+    public static function get_districts (array $districts, string $type) : void {
+        foreach($districts as $district)
+        {
+            self::get_district($district, $type);
+        }
+    }
+
+    public static function get_district(string $district, string $type) : void {
         switch($type)
         {
             case "json":
             case "odt":
             case "docx":
+            case "csv":
+            case "xls":
                 break;
             default:
                 die("Error: Invalid file type");

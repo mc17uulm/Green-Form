@@ -214,17 +214,17 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/mc17uulm/PHPRouting.git",
-                "reference": "0abd41173770883996ca24c0115f13f385e392c5"
+                "reference": "0307897f87eecf585c779edd8a502f1c366fadd4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mc17uulm/PHPRouting/zipball/0abd41173770883996ca24c0115f13f385e392c5",
-                "reference": "0abd41173770883996ca24c0115f13f385e392c5",
+                "url": "https://api.github.com/repos/mc17uulm/PHPRouting/zipball/0307897f87eecf585c779edd8a502f1c366fadd4",
+                "reference": "0307897f87eecf585c779edd8a502f1c366fadd4",
                 "shasum": ""
             },
             "require": {
                 "ext-fileinfo": "*",
-                "php": "^7.2"
+                "php": "^7.3"
             },
             "type": "library",
             "autoload": {
@@ -243,7 +243,7 @@
                 "source": "https://github.com/mc17uulm/PHPRouting/tree/master",
                 "issues": "https://github.com/mc17uulm/PHPRouting/issues"
             },
-            "time": "2019-03-20T19:31:05+00:00"
+            "time": "2019-04-07T19:39:38+00:00"
         },
         {
             "name": "pclzip/pclzip",
@@ -683,7 +683,7 @@
                 },
                 {
                     "name": "Gert de Pagter",
-                    "email": "backendtea@gmail.com"
+                    "email": "BackEndTea@gmail.com"
                 }
             ],
             "description": "Symfony polyfill for ctype functions",
